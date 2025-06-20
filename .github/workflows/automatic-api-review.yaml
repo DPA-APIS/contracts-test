@@ -18,7 +18,7 @@ env:
  
 jobs:
   review-api:
-    name: Revisar API
+    name: Revisar API 
     runs-on: ubuntu-latest
     steps:
       - name: Clonar Repositorio de API
@@ -33,7 +33,7 @@ jobs:
         if: ${{ steps.checkout_repo_api.outcome == 'success' }}
         run: |
           # Validar tipo de API<
-          openapi_api_type=$(yq '.x-dpa-api-type' "${API_DIRECTORY}${GIT_REPO_NAME}.yaml")
+          openapi_api_type=$(yq '.x-dpa-api-type' "api/contracts-test.yaml")
 
           echo -e $YELLOW"********* Validando tipo api:."$RESET
           echo "Tipo de API detectado: $openapi_api_type"

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: API UX Contract TEST V1
-  version: 1.0.5
+  version: 1.0.1
   description: API de ejemplo donde `/items` lista y crea vehículos (Automovil), y `/automoviles` sigue existiendo para creación individual.
 servers:
   - url: /trade/factoring/v1
@@ -9,11 +9,11 @@ x-dpa-api-type: UX
 x-dpa-api-id: contract-test
 externalDocs:
   url: 'https://XXXXX.com'
-  description: Más información
+  description: Más información BBB
 paths:
   /auto-items:
     get:
-      summary: Listar automóviles DDDD
+      summary: Listar automóviles EEE
       description: Devuelve un arreglo de automóviles respetando `minItems` y `maxItems` CCCC.
       parameters:
         - name: authorization
