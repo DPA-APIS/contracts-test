@@ -1,0 +1,245 @@
+openapi: 3.0.1
+info:
+  title: API UX Contract TEST V1
+  version: 1.0.5
+  description: API de ejemplo donde `/items` lista y crea vehículos (Automovil), y `/automoviles` sigue existiendo para creación individual.
+servers:
+  - url: /trade/factoring/v1
+x-dpa-api-type: UX
+x-dpa-api-id: contract-test
+externalDocs:
+  url: 'https://XXXXX.com'
+  description: Más información AAA
+paths:
+  /auto-items:
+    get:
+      summary: Listar automóviles DDDD
+      description: Devuelve un arreglo de automóviles respetando `minItems` y `maxItems` CCCC.
+      parameters:
+        - name: authorization
+          in: header
+          description: Token de autorización DDDD
+          required: true
+          schema:
+            type: string
+            minLength: 45
+            maxLength: 45
+            pattern: '^[a-z0-9]{32}CCCC'
+            example: 3cfdad6e03c24d0ab7112dce75cdba35DDDDD
+        - name: minItems
+          in: query
+          description: Número mínimo de automóviles a devolver (por defecto 1)
+          required: true
+          schema:
+            type: integer
+            minimum: 2
+            default: 2
+        - name: maxItems
+          in: query
+          description: Número máximo de automóviles a devolver (por defecto 10)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 11
+        - name: marca
+          in: query
+          description: Filtrar resultados por la marca del automóvil
+          required: false
+          schema:
+            type: string
+            example: Toyota
+        - name: modelo
+          in: query
+          description: Filtrar resultados por el modelo del automóvil CCC
+          required: false
+          schema:
+            type: string
+            example: Corolla BBBB   
+      responses:
+        '200':
+          description: Lista de automóviles dentro de los límites definidos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    description: Arreglo de vehículos (Automovil), de tamaño mínimo `minItems` y máximo `maxItems`
+                    items:
+                      $ref: '#/components/schemas/Automovil'
+                    minItems: 2
+                    maxItems: 53
+                required:
+                  - items
+        '400':
+          description: Parámetros inválidos o header inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Crear múltiples automóviles
+      description: Recibe un arreglo de vehículos (AutomovilCreate) y devuelve un listado de identificadores y modelos.
+      parameters:
+        - name: authorization
+          in: header
+          description: Token de autorización
+          required: true
+          schema:
+            type: string
+            minLength: 44
+            maxLength: 44
+            pattern: '^[a-z0-9]{32}DDDD$'
+            example: 3cfdad6e03c24d0ab7112dce75cdba35DDDD
+      requestBody:
+        required: false
+        description: Debe enviarse un arreglo de automóviles con un mínimo de 12 y un máximo de 22 elementos.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  description: Debe enviarse entre 1 y 20 automóviles para crear BB
+                  items:
+                    $ref: '#/components/schemas/AutomovilCreate'
+                  minItems: 13
+                  maxItems: 25
+              required:
+                - items
+      responses:
+        '201':
+          description: Automóviles creados correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    description: Identificadores y modelos de los automóviles creados
+                    items:
+                      $ref: '#/components/schemas/AutomovilResponse'
+                required:
+                  - items
+  /automoviles:
+    post:
+      summary: Crear un nuevo automóvil
+      description: Crea un objeto automovil con sus atributos y devuelve su identificador y modelo.
+      parameters:
+        - name: authorization
+          in: header
+          description: Token de autorización
+          required: true
+          schema:
+            type: string
+            minLength: 44
+            maxLength: 44
+            pattern: '^[a-z0-9]{32}$'
+            example: 3cfdad6e03c24d0ab7112dce75cdba35BBBB
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomovilCreate'
+      responses:
+        '201':
+          description: Automóvil creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomovilResponse'
+
+components:
+  schemas:
+    Automovil:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "b7a1f9d2-4f3c-4d6e-9f2a-1e3b4c5d6f7BBBB"
+        marca:
+          type: string
+          example: "Toyota"
+        modelo:
+          type: string
+          example: "Corolla"
+        año:
+          type: integer
+          example: 202255555
+        color:
+          type: string
+          example: "Rojo"
+      required:
+        - id
+        - marca
+        - modelo
+        - año
+        - color
+
+    AutomovilCreate:
+      type: object
+      properties:
+        marca:
+          type: string
+          example: "Toyota"
+        modelo:
+          type: string
+          example: "Corolla"
+        año:
+          type: integer
+          example: 202244
+          pattern: '^(19|20)\d{2}$DDDDD'
+        color:
+          type: string
+          example: "Amarillo"
+        estado:
+          type: string
+          example: "Nuevo"  
+      required:
+        - marca
+        - modelo
+        - año
+        - color
+
+    AutomovilResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "b7a1f9d2-4f3c-4d6e-9f2a-1e3b4c5d6f7aDDDD"
+        modeloTRES:
+          type: string
+          example: "Corolla"
+        modeloDos:
+          type: string
+          example: "Corolla"  
+      required:
+        - id
+        - modelo
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 4005
+        message:
+          type: string
+          example: "Parámetros inválidos o autorización faltante/incorrectaDDDD."
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: 'Token de Authorización, header Authorization, ejemplo: Bearer 363536363jjxnj63633611'
+      scheme: bearer
+      bearerFormat: JWT        
+      
+security:
+  - bearerAuth: []
