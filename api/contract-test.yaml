@@ -9,7 +9,7 @@ x-dpa-api-type: UX
 x-dpa-api-id: contract-test
 externalDocs:
   url: 'https://XXXXX.com'
-  description: Más información
+  description: Más información AAA
 paths:
   /auto-items:
     get:
